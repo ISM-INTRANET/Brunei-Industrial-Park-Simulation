@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10252a">
+  <title>Brunei Industrial Park Sandbox Simulator</title>
+  <style>
+    :root{--ink:#183039;--muted:#667c82;--navy:#10252a;--teal:#087f78;--teal2:#11a69a;--mint:#dff3eb;--line:#dce7e4;--paper:#f3f6f2;--white:#fff;--amber:#c47822;--red:#bd4c40;--shadow:0 18px 50px rgba(19,52,55,.09)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.45 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #2ec6b9;outline-offset:2px}h1,h2,h3,p{margin-top:0}h1{font-size:clamp(26px,3vw,39px);line-height:1.1;letter-spacing:-.04em;margin-bottom:8px}h2{font-size:17px;letter-spacing:-.02em;margin-bottom:0}h3{font-size:13px;margin-bottom:7px}small{font-size:11px}.eyebrow{font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--teal)}
+    .shell{min-height:100vh;display:grid;grid-template-columns:350px minmax(0,1fr)}.sidebar{background:var(--navy);color:#eaf4ef;display:flex;flex-direction:column;min-height:100vh}.side-inner{padding:30px 25px 36px}.brand{display:flex;align-items:center;gap:12px;margin-bottom:35px}.brand-symbol{width:40px;height:40px;border:1px solid #69b5aa;border-radius:11px;display:grid;place-items:center;background:linear-gradient(145deg,#1d5454,#16383c);box-shadow:inset 0 0 0 4px #214147}.brand-symbol span{display:block;width:15px;height:15px;border:2px solid #80dfc6;transform:rotate(45deg);border-radius:2px}.brand strong{font-size:15px;letter-spacing:-.03em;display:block}.brand small{color:#88aca9;display:block}.side-heading{display:flex;align-items:center;justify-content:space-between;margin:22px 0 12px;border-top:1px solid rgba(255,255,255,.12);padding-top:19px}.side-heading h2{font-size:12px;text-transform:uppercase;letter-spacing:.11em;color:#c6e0d9}.side-heading span{font-size:10px;color:#6f9997}.side-copy{color:#a5c2bd;font-size:12px;line-height:1.55;margin-bottom:15px}.sector-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.sector{display:flex;align-items:center;gap:8px;text-align:left;min-height:51px;border:1px solid #33545a;border-radius:10px;background:#17353a;color:#d5e6df;padding:8px;font-weight:650;font-size:11px;line-height:1.2}.sector:hover{background:#21484b}.sector[aria-pressed="true"]{border-color:#46beab;background:#214e4e;box-shadow:inset 0 0 0 1px #46beab;color:#fff}.sector-dot{flex:none;width:8px;height:8px;border-radius:50%;background:var(--sector)}.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.field{display:block;min-width:0}.field.full{grid-column:1/-1}.field-label{display:flex;justify-content:space-between;align-items:center;gap:5px;margin:0 0 5px;color:#b8d0ca;font-weight:600;font-size:11px}.field input,.field select{width:100%;height:39px;border:1px solid #416068;background:#19383d;color:#f3fbf6;border-radius:8px;padding:0 10px;outline:none}.field input:hover,.field select:hover{border-color:#6b9895}.field input:focus,.field select:focus{border-color:#7ed8bf}.field input[type=number]{appearance:textfield}.field input::-webkit-inner-spin-button{opacity:.4}.hint{display:block;margin-top:4px;color:#81aaa3;font-size:10px}.services{display:grid;grid-template-columns:1fr 1fr;gap:8px}.service{display:flex;align-items:center;gap:7px;padding:8px;border:1px solid #33545a;border-radius:8px;color:#c5dcd4;font-size:11px;line-height:1.25;cursor:pointer}.service input{accent-color:#46bea9;margin:0}.side-foot{margin-top:auto;padding:16px 25px;border-top:1px solid rgba(255,255,255,.13);color:#8fb3ac;font-size:10px}.side-foot b{color:#bce8d4}
+    .main{min-width:0;padding:30px clamp(18px,3.2vw,48px) 55px}.topline{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}.topline .eyebrow{margin-bottom:8px}.subtitle{color:var(--muted);margin-bottom:0;max-width:650px}.local-badge{flex:none;border:1px solid #c8ddd5;border-radius:99px;padding:7px 11px;color:#367b71;font-size:11px;font-weight:750;background:#eef9f2}.local-badge:before{content:"";display:inline-block;background:#37b883;width:7px;height:7px;border-radius:50%;margin-right:7px}.toolbar{display:flex;flex-wrap:wrap;gap:9px;margin:0 0 18px}.btn{border:1px solid #cdded8;border-radius:10px;padding:10px 15px;min-height:40px;background:#fff;color:#284b50;font-weight:750;font-size:12px;box-shadow:0 2px 6px rgba(20,58,57,.03)}.btn:hover{border-color:#6aaea2;background:#f7fdfa}.btn.primary{color:#fff;background:var(--teal);border-color:var(--teal);box-shadow:0 5px 14px rgba(8,127,120,.2)}.btn.primary:hover{background:#066f6a}.btn svg{vertical-align:-2px;margin-right:5px}.scenario-line{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;color:#71868a;font-size:11px}.scenario-line strong{color:#365d5d}.stale-tag{border-radius:99px;background:#fff1d9;color:#8d601e;padding:5px 9px;font-weight:750}.fresh-tag{border-radius:99px;background:#e0f4e9;color:#2f8063;padding:5px 9px;font-weight:750}
+    .preview-card{background:#fff;border:1px solid #e0e9e4;border-radius:17px;overflow:hidden;box-shadow:var(--shadow)}.preview-head{display:flex;justify-content:space-between;align-items:flex-start;padding:19px 23px 12px;gap:15px}.preview-head h2{font-size:17px}.preview-head p{font-size:11px;color:var(--muted);margin:4px 0 0}.preview-flag{font-size:10px;font-weight:800;color:#468b79;background:#e4f5e9;padding:6px 9px;border-radius:7px;white-space:nowrap}.map-wrap{position:relative;background:radial-gradient(circle at 50% 38%,#e3f2e3 0,#d5e9df 48%,#c4dcd3 100%);min-height:420px;overflow:hidden;border-top:1px solid #e7eeea;border-bottom:1px solid #e7eeea}.map-wrap:before{content:"";position:absolute;inset:0;background-image:linear-gradient(#7eaa9e18 1px,transparent 1px),linear-gradient(90deg,#7eaa9e18 1px,transparent 1px);background-size:24px 24px;pointer-events:none}.map-wrap svg{display:block;width:100%;height:420px;position:relative}.map-stamp{position:absolute;top:13px;left:17px;background:#ffffffd9;border:1px solid #ffffff;border-radius:7px;padding:6px 9px;color:#427b74;font-size:10px;font-weight:800;letter-spacing:.08em}.map-legend{display:flex;gap:13px;flex-wrap:wrap;padding:12px 21px;font-size:10px;color:#5b7778}.map-legend span{display:inline-flex;align-items:center;gap:5px}.map-legend i{display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--color)}.map-caption{margin-left:auto;color:#7a9090}.map-tip{position:absolute;right:13px;top:13px;max-width:210px;background:#173b3bf0;color:#e8f8ee;padding:11px 12px;border-radius:9px;box-shadow:0 10px 28px #173b3b2b;font-size:11px}.map-tip strong{display:block;font-size:12px;margin-bottom:4px}.map-tip[hidden]{display:none}.park-plot{cursor:pointer}.park-plot:focus-visible{outline:none;filter:drop-shadow(0 0 7px #f3bb5f)}.park-plot:hover{filter:brightness(1.08) drop-shadow(0 0 5px #ffffff)}
+    .section-title{display:flex;align-items:end;justify-content:space-between;gap:15px;margin:27px 0 12px}.section-title h2{font-size:18px}.section-title p{color:var(--muted);font-size:11px;margin:4px 0 0}.status-pill{display:inline-flex;align-items:center;gap:7px;border-radius:99px;padding:7px 11px;font-size:11px;font-weight:800}.status-pill:before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}.status-pill.healthy{color:#188569;background:#dff6e9}.status-pill.strained{color:#a56b1f;background:#fff0d2}.status-pill.critical{color:#ba4941;background:#ffe7e4}.kpi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}.kpi{background:#fff;border:1px solid #e0e9e4;border-radius:12px;padding:16px;min-height:110px;box-shadow:0 5px 18px rgba(26,58,51,.035)}.kpi .label{color:#6c8285;font-size:11px;font-weight:700}.kpi .value{font-size:26px;font-weight:850;letter-spacing:-.05em;margin:7px 0 2px;line-height:1.1}.kpi .detail{font-size:10px;color:#8ba09e}.kpi .value.good{color:#177c6b}.kpi .value.warn{color:#ad6b24}.kpi .value.bad{color:#bc4f41}.analysis-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(260px,.75fr);gap:13px;margin-top:13px}.card{background:#fff;border:1px solid #e0e9e4;border-radius:13px;padding:19px;box-shadow:0 5px 18px rgba(26,58,51,.035)}.card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px;gap:9px}.mini-label{font-size:10px;color:#829795}.capacity-row{display:grid;grid-template-columns:112px 1fr 101px;gap:10px;align-items:center;margin:11px 0}.capacity-row .name{font-size:11px;font-weight:700}.capacity-row .numbers{font-size:10px;color:#6b8585;text-align:right;white-space:nowrap}.track{height:8px;border-radius:99px;background:#e8efea;position:relative;overflow:hidden}.track:after{content:"";position:absolute;right:25%;height:100%;width:1px;background:#a5b9b2}.track .fill{height:100%;border-radius:99px;background:#35a88e;min-width:2px}.track .fill.warn{background:#e3a346}.track .fill.bad{background:#d86854}.issue-list{display:grid;gap:9px}.issue{padding:10px 11px;border-radius:9px;background:#f2f7f3;border-left:3px solid #56af94}.issue.warning{background:#fff6e6;border-color:#e5a243}.issue.critical{background:#fff0ec;border-color:#d76650}.issue strong{display:block;font-size:11px;margin-bottom:2px}.issue p{margin:0;color:#657a7a;font-size:10px;line-height:1.45}.issue.critical p{color:#8e635d}.empty{color:#6f8984;font-size:12px;padding:15px;background:#f1f8f3;border-radius:9px}.contribution{background:linear-gradient(130deg,#143c3d,#102d33);border-radius:14px;margin-top:13px;padding:21px;color:#e9f6ee;box-shadow:var(--shadow)}.contribution-top{display:flex;align-items:flex-start;justify-content:space-between;gap:15px}.contribution h2{font-size:19px;color:#fff}.contribution p{font-size:11px;color:#a6cbc2;margin:5px 0 0}.nonofficial{font-size:9px;line-height:1.25;font-weight:850;text-transform:uppercase;letter-spacing:.08em;color:#b2e2ca;border:1px solid #5a9a8c;border-radius:6px;padding:6px 8px;text-align:center}.contribution-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin-top:20px}.contribution-item{border-left:1px solid #4a7b74;padding-left:15px}.contribution-item:first-child{border:0;padding-left:0}.contribution-item strong{display:block;color:#fff;font-size:24px;letter-spacing:-.05em;line-height:1.1}.contribution-item span{display:block;color:#9bc4b9;font-size:10px;margin-top:5px}.assumptions{margin-top:13px;border:1px solid #dbe7e1;border-radius:11px;background:#fff;padding:13px 17px;font-size:11px;color:#607a7c}.assumptions summary{cursor:pointer;font-weight:800;color:#315f61}.assumptions p{margin:10px 0 0}.assumptions ul{margin:8px 0 3px;padding-left:18px}.assumptions li{margin:4px 0}.footer{font-size:10px;color:#829997;margin-top:20px}
+    @media(max-width:1100px){.shell{grid-template-columns:310px minmax(0,1fr)}.side-inner{padding:25px 18px}.analysis-grid{grid-template-columns:1fr}.kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:760px){.shell{display:block}.sidebar{min-height:0}.side-inner{padding:20px}.brand{margin-bottom:14px}.side-heading{margin-top:16px}.main{padding:22px 16px 38px}.topline{align-items:flex-start}.map-wrap,.map-wrap svg{height:350px;min-height:350px}.map-caption{width:100%;margin-left:0}.contribution-grid{grid-template-columns:repeat(2,1fr);gap:17px}.contribution-item:nth-child(3){border:0;padding-left:0}}@media(max-width:500px){h1{font-size:29px}.local-badge{display:none}.btn{flex:1 1 calc(50% - 9px)}.kpi-grid{gap:8px}.kpi{padding:13px;min-height:100px}.kpi .value{font-size:23px}.capacity-row{grid-template-columns:82px 1fr 85px;gap:6px}.capacity-row .name,.capacity-row .numbers{font-size:9px}.preview-head{padding:15px}.map-wrap,.map-wrap svg{height:290px;min-height:290px}.map-tip{top:auto;bottom:8px;right:8px}.map-legend{padding:10px 15px}}
+    @media(max-width:760px){.sector-grid,.field-grid,.services{grid-template-columns:repeat(2,minmax(0,1fr))}.sector,.service{min-width:0;overflow-wrap:anywhere}.side-heading{min-width:0}.side-heading span{white-space:nowrap;margin-left:5px}}
+    .preview-actions{display:flex;align-items:center;gap:5px;flex-wrap:wrap;justify-content:flex-end}.map-control{border:1px solid #c9ded3;background:#f4fbf6;color:#326d63;border-radius:7px;min-width:27px;height:27px;padding:0 7px;font-size:11px;font-weight:800}.map-control:hover{background:#e0f4e8}.map-zoom{font-size:10px;color:#537d75;font-weight:800;min-width:34px;text-align:center}.map-wrap svg{touch-action:none;cursor:grab}.map-wrap svg.dragging{cursor:grabbing}.park-plot{cursor:move}.park-plot.invalid polygon:first-child{stroke:#d65d4c;stroke-width:3}.park-plot.selected polygon:first-child{stroke:#117e76;stroke-width:3.5}.park-plot.selected.invalid polygon:first-child{stroke:#d65d4c}.resize-handle{cursor:nwse-resize;fill:#fff;stroke:#0c7c70;stroke-width:3;filter:drop-shadow(0 2px 3px #356e6655)}.plot-inspector{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;border-top:1px solid #e1eae5;background:#f8fbf7;padding:11px 20px;font-size:11px;color:#597b78}.plot-inspector strong{color:#244f51}.plot-inspector .inspector-hint{color:#829d99}.map-stamp{z-index:1;pointer-events:none}@media(max-width:760px){.preview-head{flex-wrap:wrap}.preview-actions{justify-content:flex-start}.plot-inspector{padding:11px 15px}}
+    .contribution-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.contribution-item:nth-child(4){border:0;padding-left:0}@media(max-width:760px){.contribution-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.contribution-item:nth-child(4){border-left:1px solid #4a7b74;padding-left:15px}.contribution-item:nth-child(5){border:0;padding-left:0}}
+  </style>
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar" aria-label="Park planning controls">
+    <div class="side-inner">
+      <div class="brand"><div class="brand-symbol" aria-hidden="true"><span></span></div><div><strong>Brunei Industrial Park</strong><small>Sandbox simulator · v0.2</small></div></div>
+      <div class="eyebrow" style="color:#7bd4bd">Build a park scenario</div>
+      <p class="side-copy">Choose a tenant mix and infrastructure plan. The simulator tests whether your park can support the demand it creates.</p>
+
+      <div class="side-heading"><h2>01 · Sector mix</h2><span>SELECT ONE OR MORE</span></div>
+      <div class="sector-grid" id="sector-grid">
+        <button type="button" class="sector" data-sector="oil" aria-pressed="true" style="--sector:#d68362"><span class="sector-dot"></span>Downstream Oil &amp; Gas</button>
+        <button type="button" class="sector" data-sector="ict" aria-pressed="true" style="--sector:#5f9cd6"><span class="sector-dot"></span>ICT</button>
+        <button type="button" class="sector" data-sector="food" aria-pressed="true" style="--sector:#dcae59"><span class="sector-dot"></span>Food</button>
+        <button type="button" class="sector" data-sector="tourism" aria-pressed="false" style="--sector:#a289cb"><span class="sector-dot"></span>Tourism</button>
+        <button type="button" class="sector" data-sector="services" aria-pressed="false" style="--sector:#5da9a1"><span class="sector-dot"></span>Services</button>
+        <button type="button" class="sector" data-sector="eco" aria-pressed="false" style="--sector:#78ae6f"><span class="sector-dot"></span>Eco / Mixed</button>
+      </div>
+      <span class="hint">Tenants are allocated evenly across selected sectors.</span>
+
+      <div class="side-heading"><h2>02 · Land &amp; zoning</h2><span>PARCEL PLAN</span></div>
+      <div class="field-grid">
+        <label class="field"><span class="field-label">Land size <small>ha</small></span><input id="land" type="number" min="10" max="5000" step="1" value="140"></label>
+        <label class="field"><span class="field-label">Tenant count <small>firms</small></span><input id="tenants" type="number" min="1" max="120" step="1" value="12"></label>
+        <label class="field full"><span class="field-label">Zoning</span><select id="zoning"><option value="industrial">Industrial</option><option value="mixed">Mixed use</option><option value="commercial">Commercial / service</option><option value="eco">Eco-sensitive</option></select></label>
+        <label class="field full"><span class="field-label">Brownfield share <small>% previously developed</small></span><input id="brownfield" type="number" min="0" max="100" step="1" value="35"><span id="land-mix" class="hint">49 ha brownfield · 91 ha greenfield</span></label>
+        <label class="field full"><span class="field-label">Green area <small>% of land</small></span><input id="green" type="number" min="0" max="60" step="1" value="18"></label>
+      </div>
+
+      <div class="side-heading"><h2>03 · Infrastructure</h2><span>DESIGN CAPACITY</span></div>
+      <div class="field-grid">
+        <label class="field"><span class="field-label">Electricity <small>MW</small></span><input id="power" type="number" min="0" max="1000" step="0.1" value="42"></label>
+        <label class="field"><span class="field-label">Water <small>m³/day</small></span><input id="water" type="number" min="0" max="100000" step="10" value="3800"></label>
+        <label class="field"><span class="field-label">Wastewater <small>m³/day</small></span><input id="wastewater" type="number" min="0" max="100000" step="10" value="3200"></label>
+        <label class="field"><span class="field-label">Roads / logistics <small>trips/day</small></span><input id="roads" type="number" min="0" max="50000" step="10" value="850"></label>
+        <label class="field"><span class="field-label">Fibre / telecom <small>Gbps</small></span><input id="fibre" type="number" min="0" max="10000" step="0.5" value="45"></label>
+        <label class="field"><span class="field-label">Budget <small>BND million</small></span><input id="budget" type="number" min="0" max="5000" step="1" value="100"></label>
+      </div>
+
+      <div class="side-heading"><h2>04 · Park services</h2><span>SHARED SUPPORT</span></div>
+      <div class="services">
+        <label class="service"><input type="checkbox" data-service="security" checked>Security</label>
+        <label class="service"><input type="checkbox" data-service="fire" checked>Fire response</label>
+        <label class="service"><input type="checkbox" data-service="effluent" checked>Effluent treatment</label>
+        <label class="service"><input type="checkbox" data-service="logistics" checked>Shared logistics</label>
+        <label class="service"><input type="checkbox" data-service="business" checked>Business support</label>
+      </div>
+    </div>
+    <div class="side-foot"><b>Planning sandbox.</b> Illustrative rules and assumptions; not an engineering, investment, or government assessment.</div>
+  </aside>
+
+  <main class="main">
+    <header class="topline"><div><div class="eyebrow">CONCEPT PLANNING LAB / BRUNEI DARUSSALAM</div><h1>Industrial Park Sandbox</h1><p class="subtitle">Sketch a park, stress its infrastructure, and see the trade-offs before detailed feasibility work.</p></div><div class="local-badge">Runs entirely in your browser</div></header>
+    <div class="toolbar" aria-label="Scenario actions">
+      <button type="button" class="btn" id="generate">◇ &nbsp;Generate Park</button>
+      <button type="button" class="btn primary" id="run">▶ &nbsp;Run Simulation</button>
+      <button type="button" class="btn" id="randomize">↝ &nbsp;Randomize</button>
+      <button type="button" class="btn" id="reset">↺ &nbsp;Reset</button>
+    </div>
+    <div class="scenario-line"><span id="scenario-summary">12 tenants · 140 ha · 3 sectors</span><span id="result-freshness" class="fresh-tag">Simulation ready</span></div>
+
+    <section class="preview-card" aria-labelledby="preview-title">
+      <div class="preview-head"><div><h2 id="preview-title">Interactive park layout</h2><p>Drag a plot to move it. Drag its corner handle to resize it. Drag open land to pan.</p></div><div class="preview-actions"><button type="button" class="map-control" id="zoom-out" aria-label="Zoom out">−</button><span id="map-zoom" class="map-zoom">100%</span><button type="button" class="map-control" id="zoom-in" aria-label="Zoom in">+</button><button type="button" class="map-control" id="fit-map">Fit park</button></div></div>
+      <div class="map-wrap">
+        <span id="map-stamp" class="map-stamp">140 HA · CONCEPTUAL SCALE</span>
+        <svg id="park-map" viewBox="0 0 960 420" role="img" aria-label="Generated isometric industrial park layout"></svg>
+        <div id="map-tip" class="map-tip" hidden></div>
+      </div>
+      <div class="plot-inspector"><span id="plot-selected"><strong>Select a plot</strong> to see its area and location.</span><span class="inspector-hint">Wheel to zoom · arrow keys move selected plot · Shift + arrows resize</span></div>
+      <div class="map-legend" id="map-legend"></div>
+    </section>
+
+    <div class="section-title"><div><h2>Simulation readout</h2><p>Demand, bottlenecks, and rough operating potential</p></div><span id="operational-status" class="status-pill healthy">Operational</span></div>
+    <div class="kpi-grid">
+      <div class="kpi"><div class="label">Approx. direct jobs</div><div id="jobs" class="value">—</div><div id="jobs-detail" class="detail">Scenario estimate</div></div>
+      <div class="kpi"><div class="label">Land occupancy</div><div id="occupancy" class="value">—</div><div class="detail">Assigned plots / developable land</div></div>
+      <div class="kpi"><div class="label">Infrastructure resilience</div><div id="resilience" class="value">—</div><div class="detail">Reserve and service score / 100</div></div>
+      <div class="kpi"><div class="label">Sustainability</div><div id="sustainability" class="value">—</div><div class="detail">Indicative planning score / 100</div></div>
+    </div>
+    <div class="analysis-grid">
+      <section class="card" aria-labelledby="capacity-title"><div class="card-head"><h2 id="capacity-title">Demand vs capacity</h2><span class="mini-label">Demand / installed capacity</span></div><div id="capacity-list"></div></section>
+      <section class="card" aria-labelledby="issues-title"><div class="card-head"><h2 id="issues-title">Consequences &amp; opportunities</h2><span id="issue-count" class="mini-label">0 findings</span></div><div id="issue-list" class="issue-list" aria-live="polite"></div></section>
+    </div>
+    <section class="contribution" aria-labelledby="contribution-title">
+      <div class="contribution-top"><div><h2 id="contribution-title">Contribution to Brunei</h2><p>Indicative local benefits if the scenario operates at its modelled level.</p></div><div class="nonofficial">Non-official<br>scenario estimate</div></div>
+      <div class="contribution-grid">
+        <div class="contribution-item"><strong id="contrib-jobs">—</strong><span>Potential direct jobs</span></div>
+        <div class="contribution-item"><strong id="contrib-payroll">—</strong><span>Annual payroll proxy · BND m</span></div>
+        <div class="contribution-item"><strong id="contrib-green">—</strong><span>Planned green space · ha</span></div>
+        <div class="contribution-item"><strong id="contrib-brownfield">—</strong><span>Plots on brownfield · ha</span></div>
+        <div class="contribution-item"><strong id="contrib-greenfield">—</strong><span>Plots on greenfield · ha</span></div>
+        <div class="contribution-item"><strong id="contrib-sectors">—</strong><span>Sectors represented</span></div>
+      </div>
+    </section>
+    <details class="assumptions"><summary>How the sandbox calculates results</summary><p>These are deliberately simple planning assumptions, not measured Brunei sector averages. Tenants are split evenly across selected sectors. Each sector has fixed per-tenant land, utility, trip and job factors. Jobs are reduced by the tightest land, utility, plot-area or budget constraint, then by zoning and missing critical services. All scores are directional.</p><ul><li>Developable land = land area less green area and an assumed 18% for internal roads and common space. Plot area is calculated from each editable footprint using a conceptual 1.296 ha per map-square scale.</li><li>Brownfield means previously developed land; greenfield means previously undeveloped land. These shares add to total site area and are separate from planned green space. The brownfield site-preparation allowance is illustrative and does not replace a contamination survey.</li><li>Infrastructure resilience rewards spare capacity and shared services; sustainability reflects green area, wastewater headroom, resource pressure, and sector mix.</li><li>Capital estimate uses simple unit costs for site preparation, installed utility capacity, roads, fibre and selected services. Overbuild is flagged above roughly 180% of demand.</li><li>Annual payroll proxy assumes BND 32,000 per modelled direct job; it is not GDP, tax revenue, export value, or an official forecast.</li></ul></details>
+    <div class="footer">Brunei Industrial Park Sandbox Simulator · local prototype · no data is uploaded or saved</div>
+  </main>
+</div>
+<script>
+(() => {
+  "use strict";
+  const sectors = {
+    oil:{name:"Downstream Oil & Gas",short:"Oil & Gas",color:"#d68362",power:6,water:550,wastewater:420,roads:90,fibre:1.2,land:12,jobs:180},
+    ict:{name:"ICT",short:"ICT",color:"#5f9cd6",power:1.6,water:55,wastewater:40,roads:12,fibre:8,land:3.5,jobs:110},
+    food:{name:"Food",short:"Food",color:"#dcae59",power:1.8,water:280,wastewater:240,roads:65,fibre:.5,land:4.5,jobs:95},
+    tourism:{name:"Tourism",short:"Tourism",color:"#a289cb",power:1.2,water:180,wastewater:150,roads:22,fibre:.8,land:5,jobs:75},
+    services:{name:"Services",short:"Services",color:"#5da9a1",power:.65,water:45,wastewater:35,roads:16,fibre:2.5,land:2.5,jobs:85},
+    eco:{name:"Eco / Mixed",short:"Eco / Mixed",color:"#78ae6f",power:1,water:100,wastewater:85,roads:30,fibre:1.5,land:4,jobs:65}
+  };
+  const defaults={land:140,tenants:12,zoning:"industrial",brownfield:35,green:18,power:42,water:3800,wastewater:3200,roads:850,fibre:45,budget:100,selected:["oil","ict","food"],services:["security","fire","effluent","logistics","business"]};
+  const keys=["land","tenants","brownfield","green","power","water","wastewater","roads","fibre","budget"];
+  const $=id=>document.getElementById(id);
+  const fmt=(n,d=0)=>Number(n).toLocaleString("en-US",{maximumFractionDigits:d});
+  const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+  let latest=null;
+  let previewInputs=null;
+  let layoutSignature="";
+  let plots=[];
+  let selectedPlot=-1;
+  let gesture=null;
+  let suppressClick=false;
+  const unitHa=140/108;
+  const view={zoom:1,panX:-40,panY:-5};
+
+  function read(){
+    const obj={};
+    keys.forEach(k=>{
+      const field=$(k),lo=Number(field.min),hi=Number(field.max),raw=Number(field.value);
+      obj[k]=clamp(Number.isFinite(raw)?raw:defaults[k],lo,hi);
+      if(k==="tenants"||k==="land"||k==="brownfield"||k==="green") obj[k]=Math.round(obj[k]);
+      field.value=obj[k];
+    });
+    obj.zoning=$("zoning").value;
+    obj.selected=[...document.querySelectorAll(".sector[aria-pressed=true]")].map(el=>el.dataset.sector);
+    if(!obj.selected.length){document.querySelector(".sector").setAttribute("aria-pressed","true");obj.selected=["oil"];}
+    obj.services=[...document.querySelectorAll("[data-service]:checked")].map(el=>el.dataset.service);
+    return obj;
+  }
+  function apply(v){
+    keys.forEach(k=>$(k).value=v[k]);
+    $("zoning").value=v.zoning;
+    document.querySelectorAll(".sector").forEach(el=>el.setAttribute("aria-pressed",String(v.selected.includes(el.dataset.sector))));
+    document.querySelectorAll("[data-service]").forEach(el=>el.checked=v.services.includes(el.dataset.service));
+  }
+  function allocations(v){
+    const result={};
+    v.selected.forEach((key,i)=>result[key]=Math.floor(v.tenants/v.selected.length)+(i<v.tenants%v.selected.length?1:0));
+    return result;
+  }
+  function signature(v){return v.tenants+"|"+v.selected.join(",");}
+  function site(v){
+    const scale=Math.sqrt(v.land/140);
+    const w=12*scale,d=9*scale;
+    return {x:6-w/2,z:4.5-d/2,w,d};
+  }
+  function plotHa(p){return p.w*p.d*unitHa;}
+  function areaWithin(p,x1,x2,z1,z2){return Math.max(0,Math.min(p.x+p.w,x2)-Math.max(p.x,x1))*Math.max(0,Math.min(p.z+p.d,z2)-Math.max(p.z,z1))*unitHa;}
+  function generateLayout(v){
+    const allocation=allocations(v),base=[{x:.55,z:.55},{x:4.35,z:.55},{x:8.15,z:.55},{x:.55,z:5.15},{x:4.35,z:5.15},{x:8.15,z:5.15}];
+    const active=v.selected.filter(key=>allocation[key]>0);
+    const scale=Math.min(1,Math.sqrt(v.land/140));
+    plots=base.map((p,i)=>{
+      const key=active[i%active.length],same=base.map((_,j)=>j).filter(j=>active[j%active.length]===key),idx=same.indexOf(i),total=allocation[key];
+      const count=Math.floor(total/same.length)+(idx<total%same.length?1:0);
+      return {x:6+(p.x-6)*scale,z:4.5+(p.z-4.5)*scale,w:3.3*scale,d:3.15*scale,key,count};
+    });
+    layoutSignature=signature(v);
+    selectedPlot=-1;
+  }
+  function validatePlots(v){
+    const bounds=site(v),bad=new Set(),problems={outside:0,road:0,overlap:0};
+    const roadHalf=.5*Math.min(1,Math.sqrt(v.land/140));
+    plots.forEach((p,i)=>{
+      if(p.x<bounds.x-.01||p.z<bounds.z-.01||p.x+p.w>bounds.x+bounds.w+.01||p.z+p.d>bounds.z+bounds.d+.01){bad.add(i);problems.outside++;}
+      if(p.z<4.5+roadHalf-.03&&p.z+p.d>4.5-roadHalf+.03&&p.x<bounds.x+bounds.w&&p.x+p.w>bounds.x){bad.add(i);problems.road++;}
+    });
+    for(let i=0;i<plots.length;i++)for(let j=i+1;j<plots.length;j++){
+      const a=plots[i],b=plots[j];
+      if(a.x<b.x+b.w-.03&&a.x+a.w>b.x+.03&&a.z<b.z+b.d-.03&&a.z+a.d>b.z+.03){bad.add(i);bad.add(j);problems.overlap++;}
+    }
+    return {bad,problems};
+  }
+  function fitPark(v){
+    const s=site(v),extent=(s.w+s.d);
+    view.zoom=clamp(Math.min(1.1,760/(extent*27),310/(extent*14)),.1,2.8);
+    view.panX=-40.5;view.panY=-5;
+    $("map-zoom").textContent=Math.round(view.zoom*100)+"%";
+  }
+  function mapTransform(){return 'translate('+(480+view.panX)+' '+(210+view.panY)+') scale('+view.zoom+') translate(-480 -210)';}
+  function svgPos(event){
+    const rect=$("park-map").getBoundingClientRect();
+    return {x:(event.clientX-rect.left)*960/rect.width,y:(event.clientY-rect.top)*420/rect.height};
+  }
+  function screenDeltaToGround(dx,dy){
+    const sx=dx/view.zoom/27,sy=dy/view.zoom/14;
+    return {x:(sx+sy)/2,z:(sy-sx)/2};
+  }
+  function point(x,z,h=0){return [480+(x-z)*27,68+(x+z)*14-h*15];}
+  function points(list){return list.map(p=>point(p[0],p[1],p[2]||0).map(n=>n.toFixed(1)).join(",")).join(" ");}
+  function poly(list,fill,stroke="#ffffff",sw=1,extra=""){return '<polygon points="'+points(list)+'" fill="'+fill+'" stroke="'+stroke+'" stroke-width="'+sw+'" '+extra+'/>';}
+  function line(a,b,color,width=2,dash=""){const p=point(a[0],a[1],a[2]||0),q=point(b[0],b[1],b[2]||0);return '<line x1="'+p[0]+'" y1="'+p[1]+'" x2="'+q[0]+'" y2="'+q[1]+'" stroke="'+color+'" stroke-width="'+width+'" stroke-linecap="round" '+(dash?'stroke-dasharray="'+dash+'"':"")+'/>';}
+  function box(x,z,w,d,h,top,side){
+    const a=[x,z],b=[x+w,z],c=[x+w,z+d],e=[x,z+d],ah=[x,z,h],bh=[x+w,z,h],ch=[x+w,z+d,h],eh=[x,z+d,h];
+    return poly([b,c,ch,bh],side,"#476a68",.6)+poly([e,c,ch,eh],side,"#476a68",.6)+poly([ah,bh,ch,eh],top,"#f7fff4",.8);
+  }
+  function tree(x,z,size=1){
+    const p=point(x,z,1.05*size);
+    return line([x,z],[x,z,.6*size],"#52715d",2)+
+      '<ellipse cx="'+p[0]+'" cy="'+p[1]+'" rx="'+(9*size)+'" ry="'+(6*size)+'" fill="#4d9f70" stroke="#36845b" stroke-width="1"/>'+
+      '<ellipse cx="'+(p[0]-2*size)+'" cy="'+(p[1]-2*size)+'" rx="'+(4*size)+'" ry="'+(2.5*size)+'" fill="#8bc587"/>';
+  }
+  function lot(p,i,invalid){
+    const {x,z,w,d,key,count}=p,s=sectors[key],active=count>0,selected=i===selectedPlot;
+    const factor=Math.min(1.5,w/3.3,d/3.15),height=Math.sqrt(factor);
+    const building=(ox,oz,bw,bd,h,top,side)=>box(x+ox*factor,z+oz*factor,bw*factor,bd*factor,h*height,top,side);
+    let html='<g class="park-plot'+(selected?' selected':'')+(invalid?' invalid':'')+'" data-plot="'+i+'" tabindex="0" role="button" aria-label="'+(active?s.name+" parcel, "+count+" tenants, "+fmt(plotHa(p),1)+" hectares":"Reserve parcel")+'">';
+    html+=poly([[x,z],[x+w,z],[x+w,z+d],[x,z+d]],active?"#f4f6e9":"#dce9dc",active?s.color:"#a8c7b2",2);
+    html+=poly([[x+.08,z+.08],[x+w-.08,z+.08],[x+w-.08,z+d-.08],[x+.08,z+d-.08]],active?"#e6e8d8":"#dce9dc","none",0);
+    if(active){
+      if(key==="oil"){html+=building(.4,.7,.8,.9,.9,"#f0d7c7","#b7775c");html+=building(1.45,.7,.65,.8,1.4,"#e9cbb7","#af735f");html+=building(.6,1.9,1.7,.47,.55,"#e4c6b6","#ad6c58");}
+      else if(key==="ict"){html+=building(.4,.65,1.1,1.3,1.45,"#d8e8ee","#5d92ba");html+=building(1.65,.7,.7,1.1,1.05,"#d8e8ee","#5d92ba");}
+      else if(key==="food"){html+=building(.35,.7,1.75,1.25,.72,"#fff0d1","#cba05b");html+=building(1.8,2,.38,.35,.48,"#ead7b0","#bd924f");}
+      else if(key==="tourism"){html+=building(.5,.7,.75,1,.9,"#ece3f1","#997fbd");html+=building(1.45,.9,.8,1,.9,"#ece3f1","#997fbd");html+=tree(x+.65*factor,z+2.35*factor,.58*factor);}
+      else if(key==="services"){html+=building(.4,.75,1.25,1.1,1.05,"#d1edeb","#599c98");html+=building(1.8,.95,.45,.85,.8,"#d1edeb","#599c98");}
+      else {html+=building(.55,.9,1.5,1.05,.65,"#e0eed3","#7da568");html+=tree(x+.3*factor,z+2.3*factor,.6*factor);html+=tree(x+2.3*factor,z+1.1*factor,.5*factor);}
+      const label=point(x+w/2,z+d/2+Math.min(1.15*factor,d*.35),0);
+      html+='<text x="'+label[0]+'" y="'+label[1]+'" text-anchor="middle" font-size="'+(factor<.55?8:10)+'" font-weight="800" fill="#31585a" stroke="#eaf3e7" stroke-width="2.7" paint-order="stroke">'+s.short+'</text>';
+      const badge=point(x+w-.12,z+.15,.2);
+      html+='<circle cx="'+badge[0]+'" cy="'+badge[1]+'" r="10" fill="'+s.color+'" stroke="#fff" stroke-width="2"/><text x="'+badge[0]+'" y="'+(badge[1]+3.4)+'" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">'+count+'</text>';
+    }else{
+      const q=point(x+w/2,z+d/2,0);
+      html+='<text x="'+q[0]+'" y="'+q[1]+'" text-anchor="middle" font-size="10" font-weight="750" fill="#8ba99d">RESERVE</text>';
+    }
+    if(selected){
+      const h=point(x+w,z+d,.03);
+      html+='<circle class="resize-handle" data-resize="'+i+'" cx="'+h[0]+'" cy="'+h[1]+'" r="9"/><path d="M'+(h[0]-3)+' '+(h[1]+2)+' l5 -5 m-2 7 l5 -5" stroke="#0c7c70" stroke-width="1.5" fill="none" pointer-events="none"/>';
+    }
+    return html+"</g>";
+  }
+  function renderPark(v){
+    const s=site(v),mixX=s.x+s.w*v.brownfield/100,validation=validatePlots(v),scale=Math.min(1,Math.sqrt(v.land/140));
+    const roadHalf=.5*scale,roadA=4.5-roadHalf,roadB=4.5+roadHalf;
+    let html='<defs><filter id="shadow"><feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#426f68" flood-opacity=".22"/></filter><pattern id="grass" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="3" cy="5" r="1" fill="#bad4b5"/></pattern></defs>';
+    html+='<g id="map-world" transform="'+mapTransform()+'">';
+    html+=poly([[s.x-.25,s.z-.25],[s.x+s.w+.25,s.z-.25],[s.x+s.w+.25,s.z+s.d+.25],[s.x-.25,s.z+s.d+.25]],"#aacdb6","#94b9a8",1,'filter="url(#shadow)"');
+    if(v.brownfield>0)html+=poly([[s.x,s.z],[mixX,s.z],[mixX,s.z+s.d],[s.x,s.z+s.d]],"#d8c2a6","#b59478",1);
+    if(v.brownfield<100)html+=poly([[mixX,s.z],[s.x+s.w,s.z],[s.x+s.w,s.z+s.d],[mixX,s.z+s.d]],"#cce1bf","#83ad93",1);
+    html+=poly([[s.x,s.z],[s.x+s.w,s.z],[s.x+s.w,s.z+s.d],[s.x,s.z+s.d]],"url(#grass)","#6d9f86",2);
+    if(v.brownfield>0&&v.brownfield<100)html+=line([mixX,s.z],[mixX,s.z+s.d],"#fff9e8",2,"6 5");
+    if(v.brownfield>7){const q=point((s.x+mixX)/2,s.z-.35);html+='<text x="'+q[0]+'" y="'+q[1]+'" text-anchor="middle" font-size="10" font-weight="800" fill="#80634a" stroke="#f5e9d6" stroke-width="3" paint-order="stroke">BROWNFIELD</text>';}
+    if(v.brownfield<93){const q=point((mixX+s.x+s.w)/2,s.z-.35);html+='<text x="'+q[0]+'" y="'+q[1]+'" text-anchor="middle" font-size="10" font-weight="800" fill="#4e8064" stroke="#e5f3df" stroke-width="3" paint-order="stroke">GREENFIELD</text>';}
+    html+=poly([[s.x,roadA],[s.x+s.w,roadA],[s.x+s.w,roadB],[s.x,roadB]],"#7d9995","#6f8e89",1);
+    for(const baseX of [4,7.85]){
+      const x=6+(baseX-6)*scale,w=.22*scale;
+      html+=poly([[x,s.z],[x+w,s.z],[x+w,s.z+s.d],[x,s.z+s.d]],"#a4b8a9","none",0);
+    }
+    html+=line([s.x,4.5],[s.x+s.w,4.5],"#e8e9c8",2,"8 7");
+    plots.forEach((p,i)=>html+=lot(p,i,validation.bad.has(i)));
+    const utilityX=s.x+s.w+.35;
+    for(const [name,z,top,side] of [["POWER",s.z+.55,"#e9ece2","#75a6a3"],["WATER",s.z+2.1,"#e7f2f0","#75a6a3"],["TREATMENT",s.z+s.d-1.8,"#e9ece2","#75a6a3"]]){
+      html+=box(utilityX,z,1.1,1,.8,top,side);
+      const q=point(utilityX+.8,z+.55,.9);html+='<text x="'+(q[0]+15)+'" y="'+(q[1]-4)+'" font-size="9" font-weight="800" fill="#39756f">'+name+'</text>';
+    }
+    const treeCount=Math.round(v.green/5)+3;
+    for(let i=0;i<treeCount;i++)html+=tree(s.x+.3+(i+.5)*s.w/(treeCount+1),s.z+s.d+.24,.55+(i%3)*.08);
+    for(let i=0;i<Math.max(2,Math.round(v.green/8));i++)html+=tree(s.x-.22,s.z+.5+(i+.5)*s.d/(Math.max(2,Math.round(v.green/8))+1),.58);
+    const roadColor=latest&&latest.ratios&&latest.ratios.roads<1?"#d86a4f":"#f3f5ea";
+    for(let i=0;i<Math.min(7,Math.ceil(v.tenants/3));i++){const x=s.x+.8+(i+.4)*s.w/8,q=point(x,4.5,.06);html+='<rect x="'+(q[0]-4)+'" y="'+(q[1]-3)+'" width="8" height="6" rx="1.5" fill="'+roadColor+'" stroke="#537774" stroke-width="1" transform="rotate(27 '+q[0]+' '+q[1]+')"/>';}
+    const gate=point(s.x+s.w,4.5);html+='<text x="'+(gate[0]+17)+'" y="'+(gate[1]+5)+'" font-size="10" font-weight="800" fill="#2f786c">MAIN GATE →</text>';
+    html+="</g>";
+    $("park-map").innerHTML=html;
+    const activeKeys=[...new Set(plots.filter(p=>p.count>0).map(p=>p.key))];
+    const legend=activeKeys.map(key=>'<span><i style="--color:'+sectors[key].color+'"></i>'+sectors[key].short+'</span>').join("");
+    $("map-legend").innerHTML='<span><i style="--color:#d8c2a6"></i>Brownfield</span><span><i style="--color:#cce1bf"></i>Greenfield</span>'+legend+'<span class="map-caption">Red outline = plot conflict · conceptual area scale</span>';
+    $("scenario-summary").textContent=fmt(v.tenants)+" tenants · "+fmt(v.land)+" ha · "+activeKeys.length+" sector"+(activeKeys.length===1?"":"s");
+    $("map-stamp").textContent=fmt(v.land)+" HA · "+fmt(v.land*v.brownfield/100,1)+" BF / "+fmt(v.land*(100-v.brownfield)/100,1)+" GF";
+    $("map-zoom").textContent=Math.round(view.zoom*100)+"%";
+    if(selectedPlot>=0&&plots[selectedPlot]){
+      const p=plots[selectedPlot],state=validation.bad.has(selectedPlot)?" · layout conflict":"";
+      const brownArea=areaWithin(p,s.x,mixX,s.z,s.z+s.d),greenArea=areaWithin(p,mixX,s.x+s.w,s.z,s.z+s.d);
+      const landType=brownArea>.1&&greenArea>.1?"mixed brownfield / greenfield":brownArea>.1?"brownfield":greenArea>.1?"greenfield":"outside site";
+      $("plot-selected").innerHTML='<strong>Plot '+(selectedPlot+1)+' · '+sectors[p.key].short+'</strong> · '+fmt(p.count)+' tenants · '+fmt(plotHa(p),1)+' ha · '+landType+' · position '+fmt(p.x,1)+", "+fmt(p.z,1)+state;
+    }else $("plot-selected").innerHTML='<strong>Select a plot</strong> to see its area and location.';
+    $("land-mix").textContent=fmt(v.land*v.brownfield/100,1)+" ha brownfield · "+fmt(v.land*(100-v.brownfield)/100,1)+" ha greenfield";
+    previewInputs=v;
+    $("map-tip").hidden=true;
+  }
+  function issue(level,title,description){return {level,title,description};}
+  function simulate(v){
+    const a=allocations(v),d={power:0,water:0,wastewater:0,roads:0,fibre:0,land:0,jobs:0};
+    v.selected.forEach(key=>Object.keys(d).forEach(metric=>d[metric]+=sectors[key][metric]*a[key]));
+    const developable=v.land*(1-v.green/100-.18);
+    const plotArea=plots.filter(p=>p.count>0).reduce((sum,p)=>sum+plotHa(p),0);
+    const landUse=Math.max(d.land,plotArea);
+    const layout=validatePlots(v);
+    const bounds=site(v),splitX=bounds.x+bounds.w*v.brownfield/100;
+    const brownfieldDeveloped=plots.reduce((sum,p)=>sum+areaWithin(p,bounds.x,splitX,bounds.z,bounds.z+bounds.d),0);
+    const greenfieldDeveloped=plots.reduce((sum,p)=>sum+areaWithin(p,splitX,bounds.x+bounds.w,bounds.z,bounds.z+bounds.d),0);
+    const capacities={power:v.power,water:v.water,wastewater:v.wastewater,roads:v.roads,fibre:v.fibre,land:developable};
+    const ratios={};Object.keys(capacities).forEach(k=>ratios[k]=d[k]>0?capacities[k]/(k==="land"?landUse:d[k]):9);
+    const serviceCost=v.services.length*.55;
+    const brownHa=v.land*v.brownfield/100,greenfieldHa=v.land-brownHa;
+    const estimatedCapex=brownHa*.38+greenfieldHa*.32+v.power*.42+v.water*.002+v.wastewater*.003+v.roads*.0015+v.fibre*.08+serviceCost+v.land*v.green/100*.03;
+    const budgetRatio=estimatedCapex>0?v.budget/estimatedCapex:1;
+    const findings=[];
+    const capacityInfo={
+      power:["Power shortage","Insufficient power could curtail production or require staged connections."],
+      water:["Water shortfall","Water-intensive tenants may need recycling or additional supply."],
+      wastewater:["Wastewater overload","Discharge could exceed treatment capacity; expansion or pretreatment is needed."],
+      roads:["Road congestion","Daily freight and service trips could exceed access capacity, causing queues."],
+      fibre:["Fibre shortage","Digital tenants may face bandwidth limits or delayed connections."],
+      land:["Land over-allocation","Required or assigned tenant footprints exceed developable area after green space and roads."]
+    };
+    Object.keys(capacityInfo).forEach(k=>{
+      if(ratios[k]<1){const pct=Math.round((1-ratios[k])*100);findings.push(issue(ratios[k]<.75?"critical":"warning",capacityInfo[k][0],pct+"% below modelled demand. "+capacityInfo[k][1]));}
+    });
+    const plotFit=d.land>0?plotArea/d.land:1;
+    if(plotFit<.98)findings.push(issue(plotFit<.75?"critical":"warning","Plots undersized","Assigned plots total "+fmt(plotArea,1)+" ha against "+fmt(d.land,1)+" ha of modelled tenant need. Enlarge plots or reduce tenants."));
+    if(layout.bad.size)findings.push(issue("critical","Plot layout conflict",layout.problems.outside+" outside the park, "+layout.problems.road+" crossing the main road, and "+layout.problems.overlap+" overlapping pairs. Move or resize red-outlined plots."));
+    const conflicts={
+      industrial:["tourism"],mixed:["oil"],commercial:["oil","food"],eco:["oil","food"]
+    }[v.zoning]||[];
+    const conflicting=v.selected.filter(key=>conflicts.includes(key)&&a[key]>0);
+    if(conflicting.length)findings.push(issue("critical","Zoning conflict",conflicting.map(k=>sectors[k].name).join(", ")+" does not fit the selected "+$("zoning").selectedOptions[0].text.toLowerCase()+" zoning. Rezone or change the tenant mix."));
+    if(!v.services.includes("security"))findings.push(issue("warning","Security gap","Shared security is not provided for the park."));
+    if(v.selected.includes("oil")&&!v.services.includes("fire"))findings.push(issue("critical","Fire response gap","Downstream Oil & Gas tenants need a dedicated emergency response plan."));
+    if((v.selected.includes("oil")||v.selected.includes("food"))&&!v.services.includes("effluent"))findings.push(issue("critical","Treatment service gap","Industrial effluent handling is missing for the selected tenant mix."));
+    if((v.selected.includes("oil")||v.selected.includes("food"))&&!v.services.includes("logistics"))findings.push(issue("warning","Logistics service gap","Freight-intensive tenants lack shared logistics support."));
+    if(v.selected.includes("ict")&&!v.services.includes("business"))findings.push(issue("warning","Business support opportunity","Business support could improve the usefulness of the ICT cluster."));
+    if(budgetRatio<1)findings.push(issue(budgetRatio<.75?"critical":"warning","Budget gap","Estimated infrastructure capital cost is BND "+fmt(estimatedCapex,1)+"m, about BND "+fmt(estimatedCapex-v.budget,1)+"m above budget."));
+    const unitCosts={power:.42,water:.002,wastewater:.003,roads:.0015,fibre:.08};
+    let overbuildCost=0,overbuilt=[];
+    Object.keys(unitCosts).forEach(k=>{if(d[k]>0&&capacities[k]/d[k]>1.8){overbuilt.push(k);overbuildCost+=Math.max(0,capacities[k]-d[k]*1.8)*unitCosts[k];}});
+    if(overbuilt.length)findings.push(issue("warning","Overbuilt infrastructure",overbuilt.map(k=>k==="roads"?"roads / logistics":k).join(", ")+" exceeds 180% of modelled demand. Approx. BND "+fmt(overbuildCost,1)+"m of capacity cost sits above that threshold."));
+    if(plotArea/developable<.35)findings.push(issue("warning","Low land utilization","Less than 35% of developable land is assigned to plots. Phase land servicing to avoid idle infrastructure."));
+    if(v.green<10)findings.push(issue("warning","Limited green space","Green area is below the sandbox's 10% minimum planning marker."));
+    let factor=Math.min(1,...Object.values(ratios),budgetRatio,plotFit);
+    if(conflicting.length)factor*=.7;
+    if(layout.bad.size)factor*=.75;
+    if(v.selected.includes("oil")&&!v.services.includes("fire"))factor*=.85;
+    if((v.selected.includes("oil")||v.selected.includes("food"))&&!v.services.includes("effluent"))factor*=.85;
+    factor=clamp(factor,0,1);
+    const jobs=Math.round(d.jobs*factor);
+    const occupancy=clamp(plotArea/developable*100,0,100);
+    const reserves=["power","water","wastewater","roads","fibre"].map(k=>clamp((ratios[k]-1)/.3,0,1));
+    const reserveAvg=reserves.reduce((s,n)=>s+n,0)/reserves.length;
+    const resilience=clamp(Math.round(25+50*reserveAvg+v.services.length*5-Math.max(0,1-budgetRatio)*30-(conflicting.length?15:0)-(layout.bad.size?15:0)),0,100);
+    const wastewaterScore=clamp(ratios.wastewater/1.2,0,1);
+    const pressure=["power","water"].map(k=>clamp(ratios[k]/1.2,0,1)).reduce((s,n)=>s+n,0)/2;
+    const sectorPenalty=(v.selected.includes("oil")?8:0)+(v.selected.includes("food")?2:0);
+    const sustainability=clamp(Math.round(25+Math.min(v.green,30)*1.2+20*wastewaterScore+15*pressure+(v.selected.includes("eco")?6:0)+(plotArea?8*brownfieldDeveloped/plotArea:0)-sectorPenalty-(overbuilt.length?5:0)),0,100);
+    if(!findings.length)findings.push(issue("positive","Balanced scenario","All modelled capacities cover demand, zoning fits the tenant mix, and no major overbuild is detected."));
+    const critical=findings.some(f=>f.level==="critical"),warning=findings.some(f=>f.level==="warning");
+    const status=critical||factor<.65?"critical":warning||factor<.95?"strained":"healthy";
+    return {a,d,capacities,ratios,developable,plotArea,landUse,layout,brownfieldDeveloped,greenfieldDeveloped,estimatedCapex,budgetRatio,overbuildCost,findings,factor,jobs,occupancy,resilience,sustainability,status};
+  }
+  function renderResults(v,r){
+    latest=r;
+    const statusText={healthy:"Operational",strained:"Strained",critical:"Critical constraints"};
+    $("operational-status").className="status-pill "+r.status;
+    $("operational-status").textContent=statusText[r.status];
+    $("jobs").textContent=fmt(r.jobs);
+    $("jobs-detail").textContent=fmt(Math.round(r.d.jobs))+" theoretical · "+fmt(r.factor*100)+"% feasible";
+    $("occupancy").textContent=fmt(r.occupancy)+"%";
+    $("resilience").textContent=r.resilience+"/100";
+    $("sustainability").textContent=r.sustainability+"/100";
+    [["jobs",r.factor],["resilience",r.resilience/100],["sustainability",r.sustainability/100]].forEach(([id,n])=>{$(id).className="value "+(n<.65?"bad":n<.85?"warn":"good");});
+    $("occupancy").className="value "+(r.ratios.land<1?"bad":r.plotArea/r.d.land<.98||r.occupancy<35?"warn":"good");
+    const defs=[["power","Electricity","MW",1],["water","Water","m³/day",0],["wastewater","Wastewater","m³/day",0],["roads","Roads / logistics","trips/day",0],["fibre","Fibre / telecom","Gbps",1],["land","Land need / plots","ha",1]];
+    $("capacity-list").innerHTML=defs.map(([k,name,unit,digits])=>{
+      const demand=k==="land"?r.landUse:r.d[k],use=demand/r.capacities[k],pct=Number.isFinite(use)?Math.round(use*100):999;
+      const cls=pct>100?"bad":pct>85?"warn":"";
+      return '<div class="capacity-row"><span class="name">'+name+'</span><div class="track" role="meter" aria-label="'+name+' capacity used" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+Math.min(pct,100)+'"><div class="fill '+cls+'" style="width:'+Math.min(pct,100)+'%"></div></div><span class="numbers">'+fmt(demand,digits)+' / '+fmt(r.capacities[k],digits)+' '+unit+'</span></div>';
+    }).join("");
+    $("issue-list").innerHTML=r.findings.map(f=>'<div class="issue '+f.level+'"><strong>'+f.title+'</strong><p>'+f.description+'</p></div>').join("");
+    $("issue-count").textContent=r.findings.length+" finding"+(r.findings.length===1?"":"s");
+    $("contrib-jobs").textContent=fmt(r.jobs);
+    $("contrib-payroll").textContent=fmt(r.jobs*.032,1);
+    $("contrib-green").textContent=fmt(v.land*v.green/100,1);
+    $("contrib-brownfield").textContent=fmt(r.brownfieldDeveloped,1);
+    $("contrib-greenfield").textContent=fmt(r.greenfieldDeveloped,1);
+    $("contrib-sectors").textContent=Object.values(r.a).filter(n=>n>0).length;
+    $("result-freshness").textContent="Simulation ready";
+    $("result-freshness").className="fresh-tag";
+  }
+  function updateLandMix(){const land=Number($("land").value)||0,brown=clamp(Number($("brownfield").value)||0,0,100);$("land-mix").textContent=fmt(land*brown/100,1)+" ha brownfield · "+fmt(land*(100-brown)/100,1)+" ha greenfield";}
+  function markStale(){updateLandMix();$("result-freshness").textContent="Inputs changed · run simulation";$("result-freshness").className="stale-tag";}
+  function generate(){const v=read();generateLayout(v);fitPark(v);latest=null;renderPark(v);$("result-freshness").textContent="Preview generated · run simulation";$("result-freshness").className="stale-tag";}
+  function run(){
+    const v=read();
+    if(!plots.length||signature(v)!==layoutSignature){generateLayout(v);fitPark(v);}
+    else if(previewInputs&&v.land!==previewInputs.land)fitPark(v);
+    const r=simulate(v);latest=r;renderPark(v);renderResults(v,r);
+  }
+  function randomize(){
+    const pick=(a,b)=>Math.round(a+Math.random()*(b-a));
+    const keys=Object.keys(sectors);
+    for(let i=keys.length-1;i>0;i--){const j=pick(0,i);[keys[i],keys[j]]=[keys[j],keys[i]];}
+    const selected=keys.slice(0,pick(2,4));
+    const zoning=["industrial","mixed","commercial","eco"][pick(0,3)];
+    const tenants=pick(5,24),land=pick(50,200),scale=tenants/12;
+    apply({land,tenants,zoning,brownfield:pick(0,85),green:pick(7,32),power:pick(20,65)*scale,water:pick(1800,5200)*scale,wastewater:pick(1300,4200)*scale,roads:pick(400,1200)*scale,fibre:pick(15,70)*scale,budget:pick(55,155)*land/120,selected,services:["security","fire","effluent","logistics","business"].filter(()=>Math.random()>.28)});
+    generateLayout(read());fitPark(read());
+    run();
+  }
+  document.querySelectorAll(".sector").forEach(btn=>btn.addEventListener("click",()=>{btn.setAttribute("aria-pressed",btn.getAttribute("aria-pressed")==="true"?"false":"true");markStale();}));
+  document.querySelectorAll("input,select").forEach(el=>el.addEventListener("change",markStale));
+  $("land").addEventListener("input",updateLandMix);
+  $("brownfield").addEventListener("input",updateLandMix);
+  $("generate").addEventListener("click",generate);
+  $("run").addEventListener("click",run);
+  $("randomize").addEventListener("click",randomize);
+  $("reset").addEventListener("click",()=>{apply(defaults);generateLayout(defaults);fitPark(defaults);run();});
+  function changeZoom(multiplier){view.zoom=clamp(view.zoom*multiplier,.1,3.5);renderPark(previewInputs||read());}
+  $("zoom-in").addEventListener("click",()=>changeZoom(1.25));
+  $("zoom-out").addEventListener("click",()=>changeZoom(.8));
+  $("fit-map").addEventListener("click",()=>{const v=previewInputs||read();fitPark(v);renderPark(v);});
+  $("park-map").addEventListener("wheel",e=>{e.preventDefault();changeZoom(e.deltaY<0?1.12:1/1.12);},{passive:false});
+  $("park-map").addEventListener("pointerdown",e=>{
+    if(e.button!==0)return;
+    const g=e.target.closest(".park-plot"),pos=svgPos(e);
+    if(g){
+      selectedPlot=Number(g.dataset.plot);
+      gesture={mode:e.target.closest("[data-resize]")?"resize":"move",i:selectedPlot,pos,original:{...plots[selectedPlot]},moved:false};
+      renderPark(previewInputs||read());
+    }else gesture={mode:"pan",pos,panX:view.panX,panY:view.panY,moved:false};
+    $("park-map").setPointerCapture(e.pointerId);
+    $("park-map").classList.add("dragging");
+    e.preventDefault();
+  });
+  $("park-map").addEventListener("pointermove",e=>{
+    if(!gesture)return;
+    const pos=svgPos(e),dx=pos.x-gesture.pos.x,dy=pos.y-gesture.pos.y;
+    if(Math.hypot(dx,dy)<2&&!gesture.moved)return;
+    if(!gesture.moved&&gesture.mode!=="pan")markStale();
+    gesture.moved=true;
+    if(gesture.mode==="pan"){view.panX=gesture.panX+dx;view.panY=gesture.panY+dy;}
+    else{
+      const delta=screenDeltaToGround(dx,dy),p=plots[gesture.i],q=gesture.original;
+      const snap=n=>Math.round(n*20)/20;
+      if(gesture.mode==="move"){p.x=snap(q.x+delta.x);p.z=snap(q.z+delta.z);}
+      else{p.w=Math.max(.6,snap(q.w+delta.x));p.d=Math.max(.6,snap(q.d+delta.z));}
+    }
+    renderPark(previewInputs||read());
+  });
+  function endGesture(e){
+    if(!gesture)return;
+    const changed=gesture.moved&&gesture.mode!=="pan";
+    suppressClick=gesture.moved;
+    gesture=null;
+    $("park-map").classList.remove("dragging");
+    if($("park-map").hasPointerCapture(e.pointerId))$("park-map").releasePointerCapture(e.pointerId);
+    if(changed)run();
+  }
+  $("park-map").addEventListener("pointerup",endGesture);
+  $("park-map").addEventListener("pointercancel",endGesture);
+  $("park-map").addEventListener("click",e=>{if(suppressClick){suppressClick=false;return;}const g=e.target.closest(".park-plot");if(g){selectedPlot=Number(g.dataset.plot);renderPark(previewInputs||read());}});
+  $("park-map").addEventListener("keydown",e=>{
+    const g=e.target.closest(".park-plot");if(!g)return;
+    const i=Number(g.dataset.plot),p=plots[i];
+    if(e.key==="Enter"||e.key===" "){e.preventDefault();selectedPlot=i;renderPark(previewInputs||read());$("park-map").querySelector('[data-plot="'+i+'"]').focus();return;}
+    const step=.2;
+    if(!["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"].includes(e.key))return;
+    e.preventDefault();selectedPlot=i;
+    if(e.shiftKey){if(e.key==="ArrowRight")p.w+=step;if(e.key==="ArrowLeft")p.w=Math.max(.6,p.w-step);if(e.key==="ArrowDown")p.d+=step;if(e.key==="ArrowUp")p.d=Math.max(.6,p.d-step);}
+    else {if(e.key==="ArrowRight")p.x+=step;if(e.key==="ArrowLeft")p.x-=step;if(e.key==="ArrowDown")p.z+=step;if(e.key==="ArrowUp")p.z-=step;}
+    run();$("park-map").querySelector('[data-plot="'+i+'"]').focus();
+  });
+  apply(defaults);run();
+})();
+</script>
+</body>
+</html>
